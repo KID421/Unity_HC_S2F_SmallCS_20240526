@@ -12,10 +12,29 @@ namespace KID
         // Range(最小，最大) 設定變數範圍限制
         [SerializeField, Header("移動速度"), Range(0, 10)]
         private float moveSpeed = 3.5f;
+        [SerializeField, Header("爬梯速度"), Range(0, 10)]
+        private float ladderSpeed = 1.5f;
+        [SerializeField, Header("檢查階梯顏色")]
+        private Color ladderColor = new Color(1, 0.3f, 0.3f, 0.65f);
+        [SerializeField, Header("檢查階梯尺寸")]
+        private Vector3 ladderSize;
+        [SerializeField, Header("檢查階梯位移")]
+        private Vector3 ladderOffset;
+        [SerializeField, Header("檢查階梯圖層")]
+        private LayerMask ladderLayer = 1 << 3;
 
         private Rigidbody2D rig;
         private Animator ani;
         private string parMove = "移動數值";
+        private string parDirection = "方向數值";
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = ladderColor;
+            Gizmos.DrawCube(
+                transform.position + ladderOffset,
+                ladderSize);
+        }
 
         private void Awake()
         {
@@ -26,22 +45,31 @@ namespace KID
 
         private void Update()
         {
-            // 呼叫自訂方法移動
             Move();
+            Ladder();
         }
 
-        // 自訂方法：移動
         private void Move()
         {
-            // 獲得玩家的水平按鍵：A、D 與左右
-            // 玩家按下左 -1，右 +1，沒按 0
             float h = Input.GetAxis("Horizontal");
-            // 剛體的加速度 = 玩家水平按鍵 * 移動速度，Y 軸是原本的重力
+            ani.SetFloat(parDirection, h);
             rig.velocity = new Vector2(h * moveSpeed, rig.velocity.y);
-            // 對 h 取絕對值
             h = Mathf.Abs(h);
-            // 設定浮點數參數 為 h
             ani.SetFloat(parMove, h);
+        }
+
+        private void Ladder()
+        {
+            float h = Input.GetAxis("Horizontal");
+
+            Collider2D hit = Physics2D.OverlapBox(
+                transform.position + ladderOffset,
+                ladderSize, 0, ladderLayer);
+
+            if (hit == null) return;
+            if (Mathf.Abs(h) < 0.2f) return;
+
+            rig.velocity = new Vector2(rig.velocity.x, ladderSpeed);
         }
     }
 }
