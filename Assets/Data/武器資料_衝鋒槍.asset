@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba175a63a6436f343a0469c44970fb45, type: 3}
+  m_Name: "\u6B66\u5668\u8CC7\u6599_\u885D\u92D2\u69CD"
+  m_EditorClassIdentifier: 
+  magazineBulletCount: 30
+  magazinePrice: 600
+  bulletSpeed: 500
+  bulletLift: 0.7
+  bulletDamage: 20
+  bulletRecoil: 0.5
+  bulletCD: 0.3
+  magazineCD: 1
