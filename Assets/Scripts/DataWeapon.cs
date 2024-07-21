@@ -9,6 +9,8 @@ namespace KID
     [CreateAssetMenu(menuName = "KID/Weapon")]
     public class DataWeapon : ScriptableObject
     {
+        [Header("武器名稱")]
+        public string weaponName;
         [Header("彈匣裝彈量"), Range(0, 60)]
         public int magazineBulletCount;
         [Header("彈匣價格"), Range(0, 10000)]
