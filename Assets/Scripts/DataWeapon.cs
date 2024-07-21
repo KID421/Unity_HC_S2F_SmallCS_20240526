@@ -27,5 +27,7 @@ namespace KID
         public float bulletCD;
         [Header("彈匣冷卻時間"), Range(0, 2)]
         public float magazineCD;
+        [Header("子彈預製物")]
+        public GameObject bulletPrefab;
     }
 }
