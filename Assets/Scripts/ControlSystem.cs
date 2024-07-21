@@ -7,6 +7,7 @@ namespace KID
     /// </summary>
     public class ControlSystem : MonoBehaviour
     {
+        #region 資料
         [SerializeField, Header("移動速度"), Range(0, 10)]
         private float moveSpeed = 3.5f;
         [SerializeField, Header("爬梯速度"), Range(0, 10)]
@@ -24,7 +25,9 @@ namespace KID
         private Rigidbody2D rig;
         private Animator ani;
         private string parMove = "移動數值";
+        #endregion
 
+        #region 事件
         // ODG 繪製圖示事件，在編輯器內繪製提示圖示
         private void OnDrawGizmos()
         {
@@ -48,7 +51,9 @@ namespace KID
             Move();
             Ladder();
         }
+        #endregion
 
+        #region 方法
         private void Move()
         {
             // 獲得玩家的水平按鍵：A、D 與左右
@@ -75,6 +80,7 @@ namespace KID
             if (Mathf.Abs(h) < 0.2f) return;
 
             rig.velocity = new Vector2(rig.velocity.x, ladderSpeed);
-        }
+        } 
+        #endregion
     }
 }
