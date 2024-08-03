@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u5B50\u5F48_\u624B\u69CD"
       objectReference: {fileID: 0}
+    - target: {fileID: 7931823153558756066, guid: 6f586338e1e47ce4aab93aa6371b42c3, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
