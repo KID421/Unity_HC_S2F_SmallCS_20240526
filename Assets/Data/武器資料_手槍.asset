@@ -15,10 +15,10 @@ MonoBehaviour:
   weaponName: "\u624B\u69CD"
   magazineBulletCount: 12
   magazinePrice: 0
-  bulletSpeed: 1000
-  bulletLift: 0.7
+  bulletSpeed: 800
+  bulletLife: 1
   bulletDamage: 10
-  bulletRecoil: 0.5
-  bulletCD: 0.1
+  bulletRecoil: 10
+  bulletCD: 0.15
   magazineCD: 1
   bulletPrefab: {fileID: 3764356216282615664, guid: afff6d10ada21c74d8b272b754d1fd7a, type: 3}

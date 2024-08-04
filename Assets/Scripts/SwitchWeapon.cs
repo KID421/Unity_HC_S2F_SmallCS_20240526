@@ -15,5 +15,29 @@ namespace KID
         {
             KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4
         };
+
+        private void Update()
+        {
+            Switch();
+        }
+
+        private void Switch()
+        {
+            // 迴圈執行全部的按鍵
+            for (int i = 0; i < weaponKeys.Length; i++)
+            {
+                // 如果玩家按下是武器按鍵
+                if (Input.GetKeyDown(weaponKeys[i]))
+                {
+                    // 先關閉所有武器
+                    for (int j = 0; j < weapons.Length; j++)
+                    {
+                        weapons[j].SetActive(false);
+                    }
+                    // 再打開玩家按下的武器，i 玩家按下武器的編號
+                    weapons[i].SetActive(true);
+                }
+            }
+        }
     }
 }

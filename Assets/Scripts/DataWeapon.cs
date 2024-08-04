@@ -18,7 +18,7 @@ namespace KID
         [Header("子彈速度"), Range(0, 2000)]
         public int bulletSpeed;
         [Header("子彈生命"), Range(0, 2)]
-        public float bulletLift;
+        public float bulletLife;
         [Header("子彈傷害"), Range(0, 100)]
         public float bulletDamage;
         [Header("子彈後座力"), Range(0, 100)]

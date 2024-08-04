@@ -16,9 +16,9 @@ MonoBehaviour:
   magazineBulletCount: 30
   magazinePrice: 600
   bulletSpeed: 1000
-  bulletLift: 0.7
+  bulletLife: 1
   bulletDamage: 20
-  bulletRecoil: 10
+  bulletRecoil: 20
   bulletCD: 0.1
-  magazineCD: 1
+  magazineCD: 1.2
   bulletPrefab: {fileID: 3764356216282615664, guid: dd4226d18db1fd849b95d0d59f9c7830, type: 3}
