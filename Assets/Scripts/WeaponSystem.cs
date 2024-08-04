@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+// 指定只用 Unity Engine 的隨機 API
+using Random = UnityEngine.Random;
 
 namespace KID
 {
@@ -13,6 +15,10 @@ namespace KID
         protected DataWeapon dataWeapon;
         [SerializeField, Header("子彈生成位置")]
         private Transform spawnBulletPoint;
+        [SerializeField, Header("生成子彈數量"), Range(1, 20)]
+        private int spawnBulletCount = 1;
+        [SerializeField, Header("生成子彈左右位移"), Range(0, 5)]
+        private int spawnBulletXOffset;
 
         protected int bulletCurrent;
         protected int bulletTotal;
@@ -64,16 +70,27 @@ namespace KID
             // 如果 fire 為 true 就 生成子彈
             if (fire)
             {
-                // 生成(物件，座標，角度)
-                // Quaternion.identity 零度角
-                GameObject tempBullet = Instantiate(dataWeapon.bulletPrefab, spawnBulletPoint.position, Quaternion.identity);
-                // 獲得生成子彈的 2D 剛體 並添加推力 往子彈生成位置前方 (X軸) 發射
-                tempBullet.GetComponent<Rigidbody2D>().AddForce(spawnBulletPoint.right * dataWeapon.bulletSpeed);
+                SpawnBullet();
                 // 扣一顆子彈
                 bulletCurrent--;
                 // 如果 updateUI 不是空的，就執行它
                 updateUI?.Invoke();
                 StartCoroutine(BulletCD());
+            }
+        }
+
+        private void SpawnBullet()
+        {
+            for (int i = 0; i < spawnBulletCount; i++)
+            {
+                float xFloat = Random.Range(0f, spawnBulletXOffset);
+                // 生成(物件，座標，角度)
+                // Quaternion.identity 零度角
+                GameObject tempBullet = Instantiate(dataWeapon.bulletPrefab, spawnBulletPoint.position + Vector3.right * xFloat, Quaternion.identity);
+                // Y 軸的浮動設定 = 隨機的範圍(-後座力，+後座力)
+                float yFloat = Random.Range(-dataWeapon.bulletRecoil, dataWeapon.bulletRecoil);
+                // 獲得生成子彈的 2D 剛體 並添加推力 往子彈生成位置前方 (X軸) 發射
+                tempBullet.GetComponent<Rigidbody2D>().AddForce(spawnBulletPoint.right * dataWeapon.bulletSpeed + Vector3.up * yFloat);
             }
         }
 
@@ -91,7 +108,7 @@ namespace KID
         /// 換彈匣
         /// </summary>
         /// <param name="reload">是否要換彈匣</param>
-        protected void Reload(bool reload)
+        protected virtual void Reload(bool reload)
         {
             // 如果 在換彈匣 就跳出
             if (isReload) return;

@@ -9,8 +9,12 @@ namespace KID
     /// 子類別：父類別 (繼承)
     public class WeaponSystemPlayer : WeaponSystem
     {
+        [SerializeField, Header("是否預設武器")]
+        private bool isDefaultWeapon;
         [SerializeField, Header("是否連射")]
         private bool isRepaid;
+        [SerializeField, Header("是否無限子彈")]
+        private bool isInifiniteBullet;
         [SerializeField, Header("介面父物件：按鈕武器")]
         private Transform uiParent;
 
@@ -54,15 +58,28 @@ namespace KID
             textMagazinePrice = uiParent.GetChild(3).GetComponent<TMP_Text>();
 
             textWeaponName.text = dataWeapon.weaponName;
-            textBulletCurrent.text = $"子彈：{dataWeapon.magazineBulletCount}";
-            textBulletTotal.text = "總數：0";
             textMagazinePrice.text = $"價格：{dataWeapon.magazinePrice}";
+
+            // 如果是無限子彈就給他 999 個彈匣 否則 就是 0 個彈匣
+            magazineCount = isInifiniteBullet ? 999 : 0;
+            UpdateUI();
+            // 保留預設武器，不是預設武器就關閉
+            gameObject.SetActive(isDefaultWeapon);
         }
 
         private void UpdateUI()
         {
+            bulletTotal = dataWeapon.magazineBulletCount * magazineCount;
             textBulletCurrent.text = $"子彈：{bulletCurrent}";
-            textBulletTotal.text = $"總數：{dataWeapon.magazineBulletCount * magazineCount}";
+            // 如果是無限子彈就顯示 ∞
+            textBulletTotal.text = $"總數：{(isInifiniteBullet ? "<size=30>∞</size>" : bulletTotal)}";
+        }
+
+        protected override void Reload(bool reload)
+        {
+            base.Reload(reload);
+            // 如果是無限子彈就給他 999 個彈匣 否則 就是 原本的彈匣
+            magazineCount = isInifiniteBullet ? 999 : magazineCount;
         }
 
         /// <summary>

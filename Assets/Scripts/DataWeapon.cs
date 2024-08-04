@@ -21,7 +21,7 @@ namespace KID
         public float bulletLift;
         [Header("子彈傷害"), Range(0, 100)]
         public float bulletDamage;
-        [Header("子彈後座力"), Range(0, 2)]
+        [Header("子彈後座力"), Range(0, 100)]
         public float bulletRecoil;
         [Header("子彈冷卻時間"), Range(0, 1)]
         public float bulletCD;
