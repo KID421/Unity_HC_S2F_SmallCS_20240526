@@ -32,8 +32,7 @@ namespace KID
 
         protected virtual void Update()
         {
-            Fire();
-            Reload();
+            
         }
 
         // 修飾詞：
@@ -52,14 +51,18 @@ namespace KID
             bulletTotal = 0;
         }
 
-        private void Fire()
+        /// <summary>
+        /// 開槍方法
+        /// </summary>
+        /// <param name="fire">是否要開槍</param>
+        protected void Fire(bool fire)
         {
             // 如果 不能開槍 就 跳出
             if (!canFire) return;
             // 如果 目前子彈 <= 0 就 跳出
             if (bulletCurrent <= 0) return;
-            // 如果 按下左鍵 就 生成子彈
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            // 如果 fire 為 true 就 生成子彈
+            if (fire)
             {
                 // 生成(物件，座標，角度)
                 // Quaternion.identity 零度角
@@ -84,14 +87,18 @@ namespace KID
             canFire = true;
         }
 
-        private void Reload()
+        /// <summary>
+        /// 換彈匣
+        /// </summary>
+        /// <param name="reload">是否要換彈匣</param>
+        protected void Reload(bool reload)
         {
             // 如果 在換彈匣 就跳出
             if (isReload) return;
             // 如果 沒有 彈匣 或者 滿彈 (當前子彈等於彈匣可裝子彈數) 就 跳出
             if (magazineCount <= 0 || bulletCurrent == dataWeapon.magazineBulletCount) return;
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (reload)
             {
                 StartCoroutine(ReloadHandle());
             }
