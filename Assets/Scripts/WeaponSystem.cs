@@ -1,5 +1,5 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 using System.Collections;
 
 namespace KID
@@ -10,51 +10,44 @@ namespace KID
     public class WeaponSystem : MonoBehaviour
     {
         [SerializeField, Header("武器資料")]
-        private DataWeapon dataWeapon;
+        protected DataWeapon dataWeapon;
         [SerializeField, Header("子彈生成位置")]
         private Transform spawnBulletPoint;
-        [Header("介面")]
-        [SerializeField]
-        private TMP_Text textWeaponName;
-        [SerializeField]
-        private TMP_Text textBulletCurrent;
-        [SerializeField]
-        private TMP_Text textBulletTotal;
-        [SerializeField]
-        private TMP_Text textMagazinePrice;
 
-        private int bulletCurrent;
-        private int bulletTotal;
-        private int magazineCount;
+        protected int bulletCurrent;
+        protected int bulletTotal;
+        protected int magazineCount;
         // 能不能開槍，預設值為 true 代表一開始可以開槍
         private bool canFire = true;
         // 是否在換彈匣
         private bool isReload;
 
-        private void Awake()
+        // Action 儲存方法
+        protected Action updateUI;
+
+        protected virtual void Awake()
         {
             Initialize();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             Fire();
             Reload();
-#if UNITY_EDITOR
-            // 如果 在編輯器內 才可以執行這邊的程式
-            Test();
-#endif
         }
+
+        // 修飾詞：
+        // 私人 private：僅限此類別存取
+        // 公開 public：所有類別都可存取
+        // 保護 protected：允許子類別存取
+
+        // 虛擬 virtual：允許子類別覆寫
 
         /// <summary>
         /// 初始化
         /// </summary>
-        private void Initialize()
+        protected virtual void Initialize()
         {
-            textWeaponName.text = dataWeapon.weaponName;
-            textBulletCurrent.text = $"子彈：{dataWeapon.magazineBulletCount}";
-            textBulletTotal.text = "總數：0";
-            textMagazinePrice.text = $"價格：{dataWeapon.magazinePrice}";
             bulletCurrent = dataWeapon.magazineBulletCount;
             bulletTotal = 0;
         }
@@ -75,7 +68,8 @@ namespace KID
                 tempBullet.GetComponent<Rigidbody2D>().AddForce(spawnBulletPoint.right * dataWeapon.bulletSpeed);
                 // 扣一顆子彈
                 bulletCurrent--;
-                UpdateUI();
+                // 如果 updateUI 不是空的，就執行它
+                updateUI?.Invoke();
                 StartCoroutine(BulletCD());
             }
         }
@@ -88,12 +82,6 @@ namespace KID
             yield return new WaitForSeconds(dataWeapon.bulletCD);
             // 可以開槍
             canFire = true;
-        }
-
-        private void UpdateUI()
-        {
-            textBulletCurrent.text = $"子彈：{bulletCurrent}";
-            textBulletTotal.text = $"總數：{dataWeapon.magazineBulletCount * magazineCount}";
         }
 
         private void Reload()
@@ -115,28 +103,16 @@ namespace KID
             isReload = true;
             // 當前子彈數歸零並更新介面
             bulletCurrent = 0;
-            UpdateUI();
+            updateUI?.Invoke();
             // 等待換彈匣
             yield return new WaitForSeconds(dataWeapon.magazineCD);
             // 裝填子彈
             bulletCurrent = dataWeapon.magazineBulletCount;
             // 扣除一個彈匣並更新介面
             magazineCount--;
-            UpdateUI();
+            updateUI?.Invoke();
             // 換彈匣結束
             isReload = false;
-        }
-
-        /// <summary>
-        /// 測試用：添加彈匣
-        /// </summary>
-        private void Test()
-        {
-            if (Input.GetKeyDown(KeyCode.Keypad1))
-            {
-                magazineCount++;
-                UpdateUI();
-            }
         }
     }
 }
