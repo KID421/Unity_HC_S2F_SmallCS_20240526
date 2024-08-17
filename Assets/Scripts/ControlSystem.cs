@@ -22,14 +22,14 @@ namespace KID
         [SerializeField, Header("爬梯區域圖層")]
         private LayerMask ladderLayer = 1 << 3;
 
-        private Rigidbody2D rig;
-        private Animator ani;
-        private string parMove = "移動數值";
+        protected Rigidbody2D rig;
+        protected Animator ani;
+        protected string parMove = "移動數值";
         #endregion
 
         #region 事件
         // ODG 繪製圖示事件，在編輯器內繪製提示圖示
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             // 決定圖示顏色
             Gizmos.color = ladderColor;
@@ -38,36 +38,31 @@ namespace KID
             Gizmos.DrawCube(transform.position + ladderOffset, ladderSize);
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             // 獲得此物件身上的 2D 剛體並存放到變數 rig 內
             rig = GetComponent<Rigidbody2D>();
             ani = GetComponent<Animator>();
         }
 
-        private void Update()
+        protected virtual void Update()
         {
-            // 呼叫自訂方法移動
-            Move();
-            Ladder();
+
         }
         #endregion
 
         #region 方法
-        private void Move()
+        protected void Move(float move)
         {
-            // 獲得玩家的水平按鍵：A、D 與左右
-            // 玩家按下左 -1，右 +1，沒按 0
-            float h = Input.GetAxis("Horizontal");
             // 剛體的加速度 = 玩家水平按鍵 * 移動速度，Y 軸是原本的重力
-            rig.velocity = new Vector2(h * moveSpeed, rig.velocity.y);
-            // 對 h 取絕對值
-            h = Mathf.Abs(h);
-            // 設定浮點數參數 為 h
-            ani.SetFloat(parMove, h);
+            rig.velocity = new Vector2(move * moveSpeed, rig.velocity.y);
+            // 對 move 取絕對值
+            move = Mathf.Abs(move);
+            // 設定浮點數參數 為 move
+            ani.SetFloat(parMove, move);
         }
 
-        private void Ladder()
+        protected void Ladder(float move)
         {
             // 2D 物理.覆蓋立方體(座標，尺寸，角度，圖層)
             Collider2D hit = Physics2D.OverlapBox(transform.position + ladderOffset,
@@ -75,9 +70,8 @@ namespace KID
 
             // 如果 hit 是空的 就不執行下面的程式 (跳出)
             if (hit == null) return;
-            // 如果 玩家 水平值絕對值 小於 0.2 就 跳出
-            float h = Input.GetAxis("Horizontal");
-            if (Mathf.Abs(h) < 0.2f) return;
+
+            if (Mathf.Abs(move) < 0.2f) return;
 
             rig.velocity = new Vector2(rig.velocity.x, ladderSpeed);
         } 

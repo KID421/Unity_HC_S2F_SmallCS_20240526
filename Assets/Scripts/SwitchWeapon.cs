@@ -23,6 +23,8 @@ namespace KID
 
         private void Switch()
         {
+            if (WeaponSystemPlayer.isReloadingMagazine) return;
+
             // 迴圈執行全部的按鍵
             for (int i = 0; i < weaponKeys.Length; i++)
             {

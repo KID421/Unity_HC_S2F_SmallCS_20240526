@@ -9,6 +9,8 @@ namespace KID
     /// 子類別：父類別 (繼承)
     public class WeaponSystemPlayer : WeaponSystem
     {
+        public static bool isReloadingMagazine;
+
         [SerializeField, Header("是否預設武器")]
         private bool isDefaultWeapon;
         [SerializeField, Header("是否連射")]
@@ -80,6 +82,17 @@ namespace KID
             base.Reload(reload);
             // 如果是無限子彈就給他 999 個彈匣 否則 就是 原本的彈匣
             magazineCount = isInifiniteBullet ? 999 : magazineCount;
+
+            if (reload)
+            {
+                isReloadingMagazine = true;
+                Invoke("ReloadingFinish", dataWeapon.magazineCD);
+            }
+        }
+
+        private void ReloadingFinish()
+        {
+            isReloadingMagazine = false;
         }
 
         /// <summary>

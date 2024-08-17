@@ -15,5 +15,10 @@ namespace KID
             // 刪除(物件，延遲時間)
             Destroy(gameObject, dataWeapon.bulletLife);
         }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Destroy(gameObject);
+        }
     }
 }
