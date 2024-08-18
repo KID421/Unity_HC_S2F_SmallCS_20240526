@@ -15,5 +15,11 @@ namespace KID
             // 刪除(物件，延遲時間)
             Destroy(gameObject, dataWeapon.bulletLife);
         }
+
+        // OCE2 碰撞事件，物件有碰撞器碰到其他物件時執行事件
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -7,6 +7,11 @@ namespace KID
     /// </summary>
     public class ControlSystemEnemy : ControlSystem
     {
+        /// <summary>
+        /// 檢查玩家是否在射線內
+        /// </summary>
+        public bool checkPlayer => CheckPlayer();
+
         // 定義列舉
         // 列舉自帶有編號從零開始，手槍0、衝鋒槍1、散彈槍2、狙擊槍3
         private enum WeaponType
@@ -27,6 +32,7 @@ namespace KID
         private LayerMask checkPlayerLayer = 1 << 3 | 1 << 6;
 
         private Transform weaponFirePoint;
+        private Transform player;
 
         protected override void OnDrawGizmos()
         {
@@ -43,6 +49,7 @@ namespace KID
         protected override void Awake()
         {
             base.Awake();
+            player = GameObject.Find(GameManager.playerName).transform;
 
             // 隱藏非選取武器，顯示選取的武器
             for (int i = 0; i < weapons.Length; i++)
@@ -64,9 +71,10 @@ namespace KID
                 ani.SetFloat(parMove, 0);
                 return;
             }
-
-            Move(-1);
-            Ladder(-1);
+            // 移動數值 = 玩家在左邊 -1，在右邊 +1
+            float move = player.position.x < transform.position.x ? -1 : +1;
+            Move(move);
+            Ladder(move);
         }
 
         private bool CheckPlayer()
