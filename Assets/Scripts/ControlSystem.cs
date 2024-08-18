@@ -29,7 +29,7 @@ namespace KID
 
         #region 事件
         // ODG 繪製圖示事件，在編輯器內繪製提示圖示
-        private void OnDrawGizmos()
+        protected virtual void OnDrawGizmos()
         {
             // 決定圖示顏色
             Gizmos.color = ladderColor;
@@ -38,7 +38,7 @@ namespace KID
             Gizmos.DrawCube(transform.position + ladderOffset, ladderSize);
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             // 獲得此物件身上的 2D 剛體並存放到變數 rig 內
             rig = GetComponent<Rigidbody2D>();
