@@ -18,9 +18,6 @@ namespace KID
         private WeaponType weaponType;
         [SerializeField, Header("武器物件")]
         private GameObject[] weapons;
-
-        private Transform weaponFirePoint;
-
         [Header("偵測玩家射線")]
         [SerializeField]
         private Color checkPlayerRayColor = new Color(0.5f, 1, 0.5f, 0.7f);
@@ -28,6 +25,20 @@ namespace KID
         private float checkPlayerLength = 3.5f;
         [SerializeField]
         private LayerMask checkPlayerLayer = 1 << 3 | 1 << 6;
+
+        private Transform weaponFirePoint;
+
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+
+            // 如果槍口為空值 就 跳出
+            if (weaponFirePoint == null) return;
+            Gizmos.color = checkPlayerRayColor;
+            // 繪製射線(起點，方向 * 長度)
+            Gizmos.DrawRay(
+                weaponFirePoint.position, weaponFirePoint.right * checkPlayerLength);
+        }
 
         protected override void Awake()
         {
@@ -40,6 +51,32 @@ namespace KID
             }
             // 獲得顯示武器的子彈生成位置
             weaponFirePoint = weapons[(int)weaponType].transform.Find("子彈生成位置");
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+
+            // 如果射線打到玩家就停止
+            if (CheckPlayer())
+            {
+                rig.velocity = Vector2.zero;
+                ani.SetFloat(parMove, 0);
+                return;
+            }
+
+            Move(-1);
+            Ladder(-1);
+        }
+
+        private bool CheckPlayer()
+        {
+            // 2D 物理射線碰撞(起點，方向，長度，圖層)
+            RaycastHit2D hit = Physics2D.Raycast(weaponFirePoint.position, weaponFirePoint.right, checkPlayerLength, checkPlayerLayer);
+            // 如果 碰到的物件是空值 就傳回 false
+            if (hit.collider == null) return false;
+            // 如果碰到物件的名稱 等於 玩家的名稱 就傳回 true
+            return hit.collider.name.Equals(GameManager.playerName);
         }
     }
 }
