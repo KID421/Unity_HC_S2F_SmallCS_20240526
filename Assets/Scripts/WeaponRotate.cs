@@ -16,6 +16,9 @@ namespace KID
 
         protected virtual void Update()
         {
+            // 如果 準心 是空的 就 跳出
+            if (crossHair == null) return;
+
             Rotate();
             Flip();
         }

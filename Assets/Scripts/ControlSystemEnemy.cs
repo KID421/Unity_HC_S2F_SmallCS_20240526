@@ -62,6 +62,8 @@ namespace KID
 
         protected override void Update()
         {
+            // 如果 玩家是空的 就 跳出
+            if (player == null) return;
             base.Update();
 
             // 如果射線打到玩家就停止

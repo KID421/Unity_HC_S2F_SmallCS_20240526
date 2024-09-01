@@ -663,6 +663,7 @@ GameObject:
   - component: {fileID: 168281219}
   - component: {fileID: 168281220}
   - component: {fileID: 168281221}
+  - component: {fileID: 168281222}
   m_Layer: 6
   m_Name: "\u73A9\u5BB6_\u4F0A\u8389\u838E\u767D"
   m_TagString: Untagged
@@ -845,6 +846,20 @@ MonoBehaviour:
   ladderLayer:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &168281222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168281214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95b087afe23f8c94c909932b86d423ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imgHp: {fileID: 895832734}
+  explosion: {fileID: 6815002326595498432, guid: ea8f1290616941f4493ed9d6c26d700e, type: 3}
 --- !u!1 &172589442
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,7 +1425,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245165968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.121494, y: -0.9999999, z: -10}
+  m_LocalPosition: {x: -8.096153, y: -0.9999999, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8323,6 +8338,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &895832734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5919510329797123531, guid: ce76b6b8577156644a2613f67566104d, type: 3}
+  m_PrefabInstance: {fileID: 8265300538482342027}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963934016
 GameObject:
   m_ObjectHideFlags: 0
@@ -9347,7 +9373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataWeapon: {fileID: 11400000, guid: 414560e78cb4356468ebda3a859a2dee, type: 2}
   spawnBulletPoint: {fileID: 1618603012}
-  spawnBulletCount: 1
+  spawnBulletCount: 20
   spawnBulletXOffset: 0
   bulletLayerIndex: 9
   fireIntervalMin: 2
@@ -16868,6 +16894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19fc81de5029eb64e9700e0c30e21d1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 168281217}
+  offset: -1
 --- !u!1 &1837524328
 GameObject:
   m_ObjectHideFlags: 0
@@ -17252,7 +17280,7 @@ MonoBehaviour:
   ladderLayer:
     serializedVersion: 2
     m_Bits: 8
-  weaponType: 1
+  weaponType: 2
   weapons:
   - {fileID: 1229712529}
   - {fileID: 2137886037}
@@ -18339,6 +18367,10 @@ PrefabInstance:
     - target: {fileID: 4485909867580325829, guid: ce76b6b8577156644a2613f67566104d, type: 3}
       propertyPath: m_Name
       value: "\u756B\u5E03\u8840\u689D\u4ECB\u9762"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5919510329797123531, guid: ce76b6b8577156644a2613f67566104d, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7333835992547090735, guid: ce76b6b8577156644a2613f67566104d, type: 3}
       propertyPath: m_PresetInfoIsWorld
