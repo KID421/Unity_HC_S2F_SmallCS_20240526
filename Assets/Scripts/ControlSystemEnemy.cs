@@ -2,6 +2,13 @@
 
 namespace KID
 {
+    // 定義列舉
+    // 列舉自帶有編號從零開始，手槍0、衝鋒槍1、散彈槍2、狙擊槍3
+    public enum WeaponType
+    {
+        Pistol, MachineGun, ShotGun, Sniper
+    }
+
     /// <summary>
     /// 控制系統：敵人
     /// </summary>
@@ -11,13 +18,6 @@ namespace KID
         /// 檢查玩家是否在射線內
         /// </summary>
         public bool checkPlayer => CheckPlayer();
-
-        // 定義列舉
-        // 列舉自帶有編號從零開始，手槍0、衝鋒槍1、散彈槍2、狙擊槍3
-        private enum WeaponType
-        {
-            Pistol, MachineGun, ShotGun, Sniper
-        }
 
         [SerializeField, Header("敵人武器")]
         private WeaponType weaponType;

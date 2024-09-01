@@ -15,8 +15,8 @@ MonoBehaviour:
   weaponName: "\u6563\u5F48\u69CD"
   magazineBulletCount: 10
   magazinePrice: 1000
-  bulletSpeed: 500
-  bulletLife: 1
+  bulletSpeed: 750
+  bulletLife: 0.3
   bulletDamage: 20
   bulletRecoil: 50
   bulletCD: 1
