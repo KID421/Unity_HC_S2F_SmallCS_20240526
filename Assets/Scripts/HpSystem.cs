@@ -38,6 +38,8 @@ namespace KID
         private void Damage(float damage)
         {
             hp -= damage;
+            // 音效管理器單例 播放音效(受傷音效)
+            SoundManager.instance.PlaySound(SoundType.Hit);
             // 更新血條圖片填滿長度
             imgHp.fillAmount = hp / hpMax;
             if (hp <= 0) Dead();
@@ -46,6 +48,7 @@ namespace KID
         protected virtual void Dead()
         {
             // print("<color=#f31>死亡</color>");
+            SoundManager.instance.PlaySound(SoundType.Dead);
             GameObject temp = Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(temp, 1);
             Destroy(gameObject);

@@ -32,6 +32,21 @@ namespace KID
             base.Awake();
             // 將 玩家的更新介面方法 放到 updateUI 資料裡面
             updateUI = UpdateUI;
+            // 訂閱玩家購買彈匣事件
+            // 當玩家購買彈匣後 會執行 OnPlayerBuyMagazine 方法
+            GameManager.instance.onBuyMagazine += OnPlayerBuyMagazine;
+        }
+
+        private void OnPlayerBuyMagazine(object sender, DataWeapon e)
+        {
+            // 刪除此行：提醒要修改
+            // throw new System.NotImplementedException();
+            // 如果 玩家購買的 武器 與此武器相同 就 添加一個彈匣 並更新介面
+            if (e == dataWeapon)
+            {
+                magazineCount++;
+                UpdateUI();
+            }
         }
 
         protected override void Update()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: "\u6563\u5F48\u69CD"
   magazineBulletCount: 10
-  magazinePrice: 1000
+  magazinePrice: 100
   bulletSpeed: 750
   bulletLife: 0.3
   bulletDamage: 20
@@ -22,3 +22,5 @@ MonoBehaviour:
   bulletCD: 1
   magazineCD: 1.5
   bulletPrefab: {fileID: 3764356216282615664, guid: aa2bb5699cb1d2a4695a5c82793b9b0e, type: 3}
+  buyMagazineKey: 120
+  soundFire: {fileID: 8300000, guid: 113deb6514c4f154ba6a91226ad208a8, type: 3}

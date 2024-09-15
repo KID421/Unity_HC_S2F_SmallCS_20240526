@@ -11,6 +11,7 @@ namespace KID
     /// </summary>
     public class WeaponSystem : MonoBehaviour
     {
+        #region 資料
         [SerializeField, Header("武器資料")]
         protected DataWeapon dataWeapon;
         [SerializeField, Header("子彈生成位置")]
@@ -32,7 +33,9 @@ namespace KID
 
         // Action 儲存方法
         protected Action updateUI;
+        #endregion
 
+        #region 事件
         protected virtual void Awake()
         {
             Initialize();
@@ -40,8 +43,9 @@ namespace KID
 
         protected virtual void Update()
         {
-            
-        }
+
+        } 
+        #endregion
 
         // 修飾詞：
         // 私人 private：僅限此類別存取
@@ -68,10 +72,15 @@ namespace KID
             // 如果 不能開槍 就 跳出
             if (!canFire) return;
             // 如果 目前子彈 <= 0 就 跳出
-            if (bulletCurrent <= 0) return;
+            if (bulletCurrent <= 0)
+            {
+                if (fire && !isEmpty) StartCoroutine(EmptyBullet());
+                return; 
+            }
             // 如果 fire 為 true 就 生成子彈
             if (fire)
             {
+                SoundManager.instance.PlaySound(dataWeapon.soundFire);
                 SpawnBullet();
                 // 扣一顆子彈
                 bulletCurrent--;
@@ -81,6 +90,19 @@ namespace KID
             }
         }
 
+        private bool isEmpty;
+
+        private IEnumerator EmptyBullet()
+        {
+            isEmpty = true;
+            SoundManager.instance.PlaySound(SoundType.Empty, 0.5f, 0.6f);
+            yield return new WaitForSeconds(dataWeapon.bulletCD);
+            isEmpty = false;
+        }
+
+        /// <summary>
+        /// 生成子彈
+        /// </summary>
         private void SpawnBullet()
         {
             for (int i = 0; i < spawnBulletCount; i++)
@@ -98,6 +120,9 @@ namespace KID
             }
         }
 
+        /// <summary>
+        /// 子彈開槍後的冷卻
+        /// </summary>
         private IEnumerator BulletCD()
         {
             // 不能開槍
@@ -121,12 +146,17 @@ namespace KID
 
             if (reload)
             {
+                SoundManager.instance.PlaySound(SoundType.Reload, 1, 1.3f);
                 StartCoroutine(ReloadHandle());
             }
         }
 
+        /// <summary>
+        /// 換彈匣處理
+        /// </summary>
         private IEnumerator ReloadHandle()
         {
+            
             // 換彈匣中
             isReload = true;
             // 當前子彈數歸零並更新介面
