@@ -22,10 +22,17 @@ namespace KID
         private TMP_Text textBulletCurrent;
         private TMP_Text textBulletTotal;
         private TMP_Text textMagazinePrice;
+        private SwitchWeapon switchWeapon;
 
         // 開槍輸入按鍵，如果連射就使用 GetKey 否則使用 GetKeyDown
         private bool fireKey => isRepaid ? Input.GetKey(KeyCode.Mouse0) : Input.GetKeyDown(KeyCode.Mouse0);
         private bool reloadKey => Input.GetKeyDown(KeyCode.Mouse1);
+
+        // 物件被啟動 (屬性面板最上方左邊的勾勾) 會執行一次
+        private void OnEnable()
+        {
+            canFire = true;
+        }
 
         protected override void Awake()
         {
@@ -35,6 +42,8 @@ namespace KID
             // 訂閱玩家購買彈匣事件
             // 當玩家購買彈匣後 會執行 OnPlayerBuyMagazine 方法
             GameManager.instance.onBuyMagazine += OnPlayerBuyMagazine;
+
+            switchWeapon = FindObjectOfType<SwitchWeapon>();
         }
 
         private void OnPlayerBuyMagazine(object sender, DataWeapon e)
@@ -95,6 +104,16 @@ namespace KID
             base.Reload(reload);
             // 如果是無限子彈就給他 999 個彈匣 否則 就是 原本的彈匣
             magazineCount = isInifiniteBullet ? 999 : magazineCount;
+        }
+
+        protected override void ReloadStart()
+        {
+            switchWeapon.enabled = false;
+        }
+
+        protected override void ReloadFinish()
+        {
+            switchWeapon.enabled = true;
         }
 
         /// <summary>

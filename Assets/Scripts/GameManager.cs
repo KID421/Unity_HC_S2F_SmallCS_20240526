@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace KID
     /// </summary>
     public class GameManager : MonoBehaviour
     {
+        #region 資料
         // 公開給外部存取的變數
         public static GameManager instance
         {
@@ -36,19 +38,34 @@ namespace KID
         [SerializeField, Header("武器資料")]
         private DataWeapon[] dataWeapons;
 
-        private TMP_Text textKillCount, textCoin;
+        private TMP_Text textKillCount, textCoin, textDistance;
         private int killCount, coin;
         private int coinIncrease = 100;
+        private Transform player;
+        private float originalX;        // 原始 X (玩家的起點)
+        private float playerX;          // 玩家當前的 X
+        private float totalX;           // 距離總數
+        private CanvasGroup groupFinal;
+        private WaitForSeconds fadeInterval = new WaitForSeconds(0.02f);
+        private TMP_Text textFinalTitle;
+        #endregion
 
         private void Awake()
         {
             textKillCount = GameObject.Find("文字擊殺數量").GetComponent<TMP_Text>();
             textCoin = GameObject.Find("文字金幣數量").GetComponent<TMP_Text>();
+            textDistance = GameObject.Find("文字行走距離").GetComponent<TMP_Text>();
+            groupFinal = GameObject.Find("群組_結束畫面").GetComponent<CanvasGroup>();
+            textFinalTitle = GameObject.Find("文字結束標題").GetComponent<TMP_Text>();
+            player = GameObject.Find(playerName).transform;
+            originalX = player.position.x;
+            playerX = player.position.x;
         }
 
         private void Update()
         {
             BuyMagazine();
+            UpdateDistance();
         }
 
         /// <summary>
@@ -62,6 +79,19 @@ namespace KID
             textCoin.text = $"金幣：{coin}";
         }
 
+        /// <summary>
+        /// 顯示結束介面
+        /// </summary>
+        /// <param name="title">結束標題</param>
+        public void ShowFinalUI(string title)
+        {
+            textFinalTitle.text = title;
+            StartCoroutine(Fade());
+        }
+
+        /// <summary>
+        /// 購買彈匣
+        /// </summary>
         private void BuyMagazine()
         {
             // 迴圈重複執行所有可買彈匣的武器
@@ -85,6 +115,39 @@ namespace KID
                     SoundManager.instance.PlaySound(SoundType.Buy);
                 }
             }
+        }
+
+        /// <summary>
+        /// 更新距離
+        /// </summary>
+        private void UpdateDistance()
+        {
+            // 如果玩家為空值 (死亡) 就跳出
+            if (player == null) return;
+            // 如果玩家 X 軸 小於 上次紀錄的 X 軸就跳出 (回頭不更新)
+            if (player.position.x < playerX) return;
+            // 紀錄玩家 X 座標
+            playerX = player.position.x;
+            // 計算距離總數並更新介面
+            totalX = playerX - originalX;
+            // F0 小數點 0 位數，F2 兩位數
+            textDistance.text = $"{totalX.ToString("F0")} m";
+        }
+
+        /// <summary>
+        /// 淡入
+        /// </summary>
+        private IEnumerator Fade()
+        {
+            // 遞增結束畫面透明度，每次 + 0.1，等待 0.02 秒
+            for (int i = 0; i < 10; i++)
+            {
+                groupFinal.alpha += 0.1f;
+                yield return fadeInterval;
+            }
+            // 結束畫面互動與遮擋勾選
+            groupFinal.interactable = true;
+            groupFinal.blocksRaycasts = true;
         }
     }
 }

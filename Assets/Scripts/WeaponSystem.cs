@@ -27,10 +27,10 @@ namespace KID
         protected int bulletTotal;
         protected int magazineCount;
         // 能不能開槍，預設值為 true 代表一開始可以開槍
-        private bool canFire = true;
+        protected bool canFire = true;
         // 是否在換彈匣
         private bool isReload;
-
+        private bool isEmpty;
         // Action 儲存方法
         protected Action updateUI;
         #endregion
@@ -90,8 +90,6 @@ namespace KID
             }
         }
 
-        private bool isEmpty;
-
         private IEnumerator EmptyBullet()
         {
             isEmpty = true;
@@ -110,11 +108,11 @@ namespace KID
                 float xFloat = Random.Range(0f, spawnBulletXOffset);
                 // 生成(物件，座標，角度)
                 // Quaternion.identity 零度角
-                GameObject tempBullet = Instantiate(dataWeapon.bulletPrefab, spawnBulletPoint.position + Vector3.right * xFloat, Quaternion.identity);
+                GameObject tempBullet = Instantiate(dataWeapon.bulletPrefab, spawnBulletPoint.position + spawnBulletPoint.right * xFloat, Quaternion.identity);
                 // Y 軸的浮動設定 = 隨機的範圍(-後座力，+後座力)
                 float yFloat = Random.Range(-dataWeapon.bulletRecoil, dataWeapon.bulletRecoil);
                 // 獲得生成子彈的 2D 剛體 並添加推力 往子彈生成位置前方 (X軸) 發射
-                tempBullet.GetComponent<Rigidbody2D>().AddForce(spawnBulletPoint.right * dataWeapon.bulletSpeed + Vector3.up * yFloat);
+                tempBullet.GetComponent<Rigidbody2D>().AddForce(spawnBulletPoint.right * dataWeapon.bulletSpeed + spawnBulletPoint.up * yFloat);
                 // 指定子彈圖層
                 tempBullet.layer = bulletLayerIndex;
             }
@@ -156,9 +154,9 @@ namespace KID
         /// </summary>
         private IEnumerator ReloadHandle()
         {
-            
             // 換彈匣中
             isReload = true;
+            ReloadStart();
             // 當前子彈數歸零並更新介面
             bulletCurrent = 0;
             updateUI?.Invoke();
@@ -171,6 +169,17 @@ namespace KID
             updateUI?.Invoke();
             // 換彈匣結束
             isReload = false;
+            ReloadFinish();
+        }
+
+        protected virtual void ReloadStart()
+        {
+
+        }
+
+        protected virtual void ReloadFinish()
+        {
+
         }
     }
 }

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: "\u6563\u5F48\u69CD"
   magazineBulletCount: 10
-  magazinePrice: 100
+  magazinePrice: 300
   bulletSpeed: 750
   bulletLife: 0.3
   bulletDamage: 20
-  bulletRecoil: 50
+  bulletRecoil: 100
   bulletCD: 1
   magazineCD: 1.5
   bulletPrefab: {fileID: 3764356216282615664, guid: aa2bb5699cb1d2a4695a5c82793b9b0e, type: 3}

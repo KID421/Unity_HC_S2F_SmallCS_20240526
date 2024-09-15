@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: "\u72D9\u64CA\u69CD"
   magazineBulletCount: 6
-  magazinePrice: 1600
+  magazinePrice: 500
   bulletSpeed: 1000
   bulletLife: 1
   bulletDamage: 50
